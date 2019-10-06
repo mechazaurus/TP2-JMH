@@ -53,8 +53,8 @@ import fr.polytechtours.javaperformance.jmh.sort.JavaSort;
 import fr.polytechtours.javaperformance.jmh.sort.SelectionSort;
 
 @BenchmarkMode(Mode.Throughput)
-@Warmup(iterations = 3, time = 3, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 3, time = 3, timeUnit = TimeUnit.SECONDS)
+//@Warmup(iterations = 3, time = 3, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 1, time = 1, timeUnit = TimeUnit.SECONDS)
 public class MyBenchmark {
 
 	// ===== ATTRIBUTES =====
@@ -69,34 +69,15 @@ public class MyBenchmark {
 	@State(Scope.Thread)
 	public static class Data {
 		
-		@SuppressWarnings("unused")
 		private ArrayList<Integer> tab;
 		
 		public Data() {
 			tab = new ArrayList<Integer>();
 			tab.add(1);
-			tab.add(5);
-			tab.add(4);
-			tab.add(2);
-			tab.add(3);
 		}
 		
 		public ArrayList<Integer> getTab() {
 			return this.tab;
-		}
-		
-		public void resetTab() {
-			tab.clear();
-			tab.add(1);
-			tab.add(5);
-			tab.add(4);
-			tab.add(2);
-			tab.add(3);
-		}
-		
-		@TearDown(Level.Iteration)
-		public void displayTab() {
-			System.out.println(tab.toString());
 		}
 	}
 
@@ -108,15 +89,13 @@ public class MyBenchmark {
 	public void benchmarkBubbleSort(Data data, Blackhole blackhole) {
 		
 		// Sort the list and consume it
-		data.resetTab();
-		blackhole.consume(bubbleSort.sort(data.getTab()));
+		blackhole.consume(bubbleSort.sort(data.getTab()));	
 	}
 	
 	@Benchmark
 	public void benchmarkCombSort(Data data, Blackhole blackhole) {
 		
 		// Sort the list and consume it
-		data.resetTab();
 		blackhole.consume(combSort.sort(data.getTab()));
 	}
 	
@@ -124,7 +103,6 @@ public class MyBenchmark {
 	public void benchmarkGnomeSort(Data data, Blackhole blackhole) {
 		
 		// Sort the list and consume it
-		data.resetTab();
 		blackhole.consume(gnomeSort.sort(data.getTab()));
 	}
 	
@@ -133,14 +111,12 @@ public class MyBenchmark {
 		
 		// Sort the list and consume it
 		blackhole.consume(insertionSort.sort(data.getTab()));
-		data.resetTab();
 	}
 	
 	@Benchmark
 	public void benchmarkJavaSort(Data data, Blackhole blackhole) {
 		
 		// Sort the list and consume it
-		data.resetTab();
 		blackhole.consume(javaSort.sort(data.getTab()));
 	}
 	
@@ -148,7 +124,6 @@ public class MyBenchmark {
 	public void benchmarkSelectionSort(Data data, Blackhole blackhole) {
 		
 		// Sort the list and consume it
-		data.resetTab();
 		blackhole.consume(selectionSort.sort(data.getTab()));
 	}
 	
