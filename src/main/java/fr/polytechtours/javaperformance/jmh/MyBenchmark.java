@@ -32,6 +32,8 @@
 package fr.polytechtours.javaperformance.jmh;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -53,8 +55,8 @@ import fr.polytechtours.javaperformance.jmh.sort.JavaSort;
 import fr.polytechtours.javaperformance.jmh.sort.SelectionSort;
 
 @BenchmarkMode(Mode.Throughput)
-//@Warmup(iterations = 3, time = 3, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 1, time = 1, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 5, timeUnit = TimeUnit.SECONDS)
 public class MyBenchmark {
 
 	// ===== ATTRIBUTES =====
@@ -73,11 +75,23 @@ public class MyBenchmark {
 		
 		public Data() {
 			tab = new ArrayList<Integer>();
-			tab.add(1);
 		}
 		
 		public ArrayList<Integer> getTab() {
 			return this.tab;
+		}
+		
+		@TearDown(Level.Iteration)
+		public void prepareTab() {
+			
+			tab.clear();
+			
+			for (int i = 1; i <= 10000 ; i++) {
+				tab.add(i);
+			}
+			
+			Random random = new Random(12345);
+			Collections.shuffle(tab, random);
 		}
 	}
 
